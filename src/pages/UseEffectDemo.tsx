@@ -12,19 +12,31 @@ interface UserData {
 
 export default function UserEffectDemo() {
 	const [userId, setUserId] = useState(1);
-	const [userData, setUserData] = useState<UserData | null>(null); // fetched user data
+	const [userData, setUserData] = useState<UserData | null>(null);
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		setLoading(true);
-		// Effect runs every time `userId` changes
-		fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-			.then(res => res.json())
-			.then((data: UserData) => {
+		const fetchUser = async () => {
+			setLoading(true);
+			setError(null);
+			try {
+				const res = await fetch(`https://jsonplaceholde.typicoder.com/users/${userId}`);
+				if (!res.ok) {
+					throw new Error(`HTTP error! status: ${res.status}`);
+				}
+				const data: UserData = await res.json();
 				setUserData(data);
+			} catch (error) {
+				setError(error instanceof Error ? error.message : 'Failed to fetch user data');
+				setUserData(null);
+			} finally {
 				setLoading(false);
-			});
-	}, [userId]); // 🔁 Only re-run if userId changes
+			}
+		};
+
+		fetchUser();
+	}, [userId]);
 
 	return (
 		<div>
@@ -49,6 +61,10 @@ export default function UserEffectDemo() {
 
 			{loading ? (
 				<p>Loading user data...</p>
+			) : error ? (
+				<div className="text-red-600 p-4 bg-red-100 rounded">
+					<p>Error: {error}</p>
+				</div>
 			) : (
 				userData && (
 					<div>
