@@ -3,6 +3,7 @@ import Task, { taskData } from './components/Task'
 import Test from './pages/Test'
 import Chat from './pages/Chat'
 import Calculator from './pages/Calculator'
+import UserEffectDemo from './pages/UseEffectDemo'
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
             </Link>
 						<Link to="/calculator" className="text-blue-500 hover:text-blue-700">
               Calculator
+            </Link>
+						<Link to="/use_effect_demo" className="text-blue-500 hover:text-blue-700">
+              UseEffectDemo
             </Link>
           </div>
         </nav>
@@ -42,7 +46,7 @@ function App() {
           <Route path="/test" element={<Test />} />
 					<Route path="/chat" element={<Chat />} />
 					<Route path="/calculator" element={<Calculator />} />
-          <Route path="/whisper-chat" element={<WhisperChat />} />
+					<Route path="/use_effect_demo" element={<UserEffectDemo />} />
         </Routes>
       </div>
     </BrowserRouter>
