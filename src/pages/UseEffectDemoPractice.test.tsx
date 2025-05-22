@@ -2,6 +2,27 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import UseEffectDemoPractice from './UseEffectDemoPractice'
 
+const fakeUsers = [
+	{
+		id: 1,
+		name: 'John Doe',
+		email: 'johndoe@toy.com',
+		company: {name: "Toy Company"}
+	},
+	{
+		id: 2,
+		name: 'Emily',
+		email: 'emily@google.com',
+		company: {name: "Microsoft"}
+	},
+	{
+		id: 3,
+		name: 'Dennis',
+		email: 'dennis@google.com',
+		company: {name: "Google"}
+	}
+]
+
 
 describe('UseEffectDemoPractice', () => {
   beforeEach(() => {
@@ -11,11 +32,7 @@ describe('UseEffectDemoPractice', () => {
       Promise.resolve({
 				ok: true,
         json: () =>
-          Promise.resolve({
-            id: 1,
-            name: 'John Doe',
-						company: {name: "Toy Company"}
-          }),
+          Promise.resolve(fakeUsers),
       })
     ));
   });
@@ -42,7 +59,7 @@ describe('UseEffectDemoPractice', () => {
 		await waitFor(()=> {
 			// FIXME: Why fetch has been called three times ?
 			expect(fetch).toHaveBeenCalledTimes(1);
-			expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+			fakeUsers.forEach(user => expect(screen.getByText(new RegExp(`Name: ${user.name}`, 'i'))).toBeInTheDocument());
 		})
 	})
 

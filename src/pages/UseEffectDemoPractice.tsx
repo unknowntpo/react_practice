@@ -4,7 +4,8 @@ interface Company {
 	name: string;
 }
 
-interface UserData {
+interface User {
+	id: number;
 	name: string;
 	email: string;
 	company: Company;
@@ -14,25 +15,25 @@ export default function UseEffectDemoPractice() {
 	const [refreshTriggered, setRefresh] = useState(false);
 	const [isLoading, setLoading] = useState(false);
 	const [errorMessage, setError] = useState<Error | null>(null);
-	const [userData, setUserData] = useState<UserData | null>(null)
+	const [users, setUsers] = useState<User[] | null>(null)
 	
 	useEffect(() => {
 		// prevent initial call of userEffect
 		if (!refreshTriggered) return;
 		const fetchUser = async() => {
-			await fetch('https://jsonplaceholder.typicode.com/users/1')
+			await fetch('https://jsonplaceholder.typicode.com/users')
 				.then(resp => {
 					if (!resp.ok) {
 						throw new Error(`Status: ${resp.status}`);
 					}
 					return resp.json();
 				})
-				.then(data => {console.log(`got data: ${JSON.stringify(data)}`); setUserData(data)})
+				.then(data => {console.log(`got data: ${JSON.stringify(data)}`); setUsers(data)})
 				.catch((e)=> { console.log(e); setError(e) })
 				.finally(() => {setRefresh(false); setLoading(false)});
 		}
 
-		setUserData(null);
+		setUsers(null);
 		setError(null);
 		setLoading(true);
 		fetchUser();
@@ -44,7 +45,6 @@ export default function UseEffectDemoPractice() {
 			<div className="users-container" data-testid="users-container">
 				{
 					(() => {
-						console.log(`displaying div`);
 						if (isLoading) return (<div>Loading data ...</div>);
 						if (errorMessage) return (
 							<div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md shadow-sm">
@@ -61,13 +61,20 @@ export default function UseEffectDemoPractice() {
 								</div>
 							</div>
 						);
-						if (userData) return (
-							<div>
-								<h1>User Data</h1>
-								<p>Name: {userData!.name}</p>
-								<p>Email: {userData!.email}</p>
-								<p>Company: {userData!.company.name}</p>
-							</div>
+						if (users) return (
+							<ul className="space-y-4">
+								{
+									users.map(user => (
+										<li key={user.email} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+											<div>
+												<p className="text-gray-600 mb-2"><span className="font-semibold">Name:</span> {user.name}</p>
+												<p className="text-gray-600 mb-2"><span className="font-semibold">Email:</span> {user.email}</p>
+												<p className="text-gray-600"><span className="font-semibold">Company:</span> {user.company.name}</p>
+											</div>
+										</li>
+								))
+								}
+							</ul>
 						);
 						return null;
 					})()
