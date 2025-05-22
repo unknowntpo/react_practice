@@ -35,6 +35,9 @@ describe('UseEffectDemoPractice', () => {
 
 		fireEvent.click(screen.getByTestId('refresh-button'));
 
+		// make sure Loading data information is present.
+		expect(screen.getByTestId('users-container').innerHTML).toMatch(/Loading data/);
+
 		await waitFor(()=> {
 			// FIXME: Why fetch has been called three times ?
 			expect(fetch).toHaveBeenCalledTimes(3);
