@@ -4,6 +4,7 @@ import Test from './pages/Test'
 import Chat from './pages/Chat'
 import Calculator from './pages/Calculator'
 import UserEffectDemo from './pages/UseEffectDemo'
+import UseEffectDemoPractice from './pages/UseEffectDemoPractice'
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
 						<Link to="/use_effect_demo" className="text-blue-500 hover:text-blue-700">
               UseEffectDemo
             </Link>
+						<Link to="/use_effect_demo_practice" className="text-blue-500 hover:text-blue-700">
+              UseEffectDemoPractice
+            </Link>
           </div>
         </nav>
 
@@ -47,6 +51,7 @@ function App() {
 					<Route path="/chat" element={<Chat />} />
 					<Route path="/calculator" element={<Calculator />} />
 					<Route path="/use_effect_demo" element={<UserEffectDemo />} />
+					<Route path="/use_effect_demo_practice" element={<UseEffectDemoPractice />} />
         </Routes>
       </div>
     </BrowserRouter>
