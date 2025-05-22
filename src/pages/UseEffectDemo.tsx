@@ -21,7 +21,7 @@ export default function UserEffectDemo() {
 			setLoading(true);
 			setError(null);
 			try {
-				const res = await fetch(`https://jsonplaceholde.typicoder.com/users/${userId}`);
+				const res = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
 				if (!res.ok) {
 					throw new Error(`HTTP error! status: ${res.status}`);
 				}
