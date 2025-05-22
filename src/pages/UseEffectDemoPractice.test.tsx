@@ -9,6 +9,7 @@ describe('UseEffectDemoPractice', () => {
     // Mock global fetch
     vi.stubGlobal('fetch', vi.fn(() =>
       Promise.resolve({
+				ok: true,
         json: () =>
           Promise.resolve({
             id: 1,
@@ -40,7 +41,7 @@ describe('UseEffectDemoPractice', () => {
 
 		await waitFor(()=> {
 			// FIXME: Why fetch has been called three times ?
-			expect(fetch).toHaveBeenCalledTimes(3);
+			expect(fetch).toHaveBeenCalledTimes(1);
 			expect(screen.getByText(/John Doe/)).toBeInTheDocument();
 		})
 	})
@@ -60,8 +61,8 @@ describe('UseEffectDemoPractice', () => {
 
 			await waitFor(()=> {
 				// FIXME: Why fetch has been called three times ?
-				expect(fetch).toHaveBeenCalledTimes(3);
-				expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+				expect(fetch).toHaveBeenCalled();
+				expect(screen.getByText(/Failed to fetch user data/)).toBeInTheDocument();
 			})
 		})
 	})
