@@ -44,4 +44,25 @@ describe('UseEffectDemoPractice', () => {
 			expect(screen.getByText(/John Doe/)).toBeInTheDocument();
 		})
 	})
+
+	describe('fetch data failed when I click refresh', async () => {
+		it('shows error message', async () => {
+			// stimulate error comes from 'fetch'
+			vi.stubGlobal('fetch', vi.fn(()=> Promise.reject(new Error('Failed to fetch'))));
+
+			render(<UseEffectDemoPractice />)
+			expect(screen.getByText(/Hello from UseEffectDemoPractice/)).toBeInTheDocument();
+
+			fireEvent.click(screen.getByTestId('refresh-button'));
+
+			// make sure Loading data information is present.
+			expect(screen.getByTestId('users-container').innerHTML).toMatch(/Loading data/);
+
+			await waitFor(()=> {
+				// FIXME: Why fetch has been called three times ?
+				expect(fetch).toHaveBeenCalledTimes(3);
+				expect(screen.getByText(/John Doe/)).toBeInTheDocument();
+			})
+		})
+	})
 })
