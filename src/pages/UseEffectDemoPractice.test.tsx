@@ -59,7 +59,7 @@ describe('UseEffectDemoPractice', () => {
 		await waitFor(()=> {
 			// FIXME: Why fetch has been called three times ?
 			expect(fetch).toHaveBeenCalledTimes(1);
-			fakeUsers.forEach(user => expect(screen.getByText(new RegExp(`Name: ${user.name}`, 'i'))).toBeInTheDocument());
+			fakeUsers.forEach(user => expect(screen.getByText(user.name)).toBeInTheDocument());
 		})
 	})
 

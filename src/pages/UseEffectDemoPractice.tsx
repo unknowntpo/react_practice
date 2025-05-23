@@ -39,48 +39,59 @@ export default function UseEffectDemoPractice() {
 		fetchUser();
 	}, [refreshTriggered])
 	return (
-		<div>
-			<div>Hello from UseEffectDemoPractice</div>
-			<button className="refresh-button mr-2 p-2 bg-blue-700 hover:bg-blue-800" data-testid="refresh-button" onClick={() => setRefresh(true)}>Refresh</button>
-			<div className="users-container" data-testid="users-container">
+		<div className="container mx-auto p-4">
+			<div className="text-2xl font-bold mb-4">Hello from UseEffectDemoPractice</div>
+			<button 
+				className="btn btn-primary" 
+				data-testid="refresh-button" 
+				onClick={() => setRefresh(true)}
+			>
+				Refresh
+			</button>
+			<div className="mt-4" data-testid="users-container">
 				{
 					(() => {
-						if (isLoading) return (<div>Loading data ...</div>);
+						if (isLoading) return (
+							<div className="flex justify-center">
+								<span className="loading loading-spinner loading-lg"></span>
+								<span className="ml-2">Loading data</span>
+							</div>
+						);
 						if (errorMessage) return (
-							<div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-md shadow-sm">
-								<div className="flex items-center">
-									<div className="flex-shrink-0">
-										<svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-											<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-										</svg>
-									</div>
-									<div className="ml-3">
-										<p className="text-sm text-red-700 font-medium">Failed to fetch user data</p>
-										<p className="text-sm text-red-600 mt-1">{errorMessage.message}</p>
-									</div>
+							<div className="alert alert-error">
+								<svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								<div>
+									<h3 className="font-bold">Failed to fetch user data</h3>
+									<div className="text-xs">{errorMessage.message}</div>
 								</div>
 							</div>
 						);
 						if (users) return (
-							<ul className="space-y-4">
-								{
-									users.map(user => (
-										<li key={user.email} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-											<div>
-												<p className="text-gray-600 mb-2"><span className="font-semibold">Name:</span> {user.name}</p>
-												<p className="text-gray-600 mb-2"><span className="font-semibold">Email:</span> {user.email}</p>
-												<p className="text-gray-600"><span className="font-semibold">Company:</span> {user.company.name}</p>
+							<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+								{users.map(user => (
+									<div key={user.email} className="card bg-base-100 shadow-xl">
+										<div className="card-body">
+											<h2 className="card-title">{user.name}</h2>
+											<div className="space-y-2">
+												<p className="flex items-center gap-2">
+													<span className="font-semibold">Email:</span>
+													<span className="text-sm opacity-80">{user.email}</span>
+												</p>
+												<p className="flex items-center gap-2">
+													<span className="font-semibold">Company:</span>
+													<span className="text-sm opacity-80">{user.company.name}</span>
+												</p>
 											</div>
-										</li>
-								))
-								}
-							</ul>
+										</div>
+									</div>
+								))}
+							</div>
 						);
 						return null;
 					})()
 				}
-				<div>
-				</div>
 			</div>
 		</div>
 	)
